@@ -1,6 +1,9 @@
 # WinChoco-PSUpdate
  
-#> needs installed Chocolatey of course -- https://chocolatey.org
+## needs installed Chocolatey of course -- https://chocolatey.org
+Has to be executed with admin rights. 
+The bat-File is asking for the Admin rights after started
+ 
  
 .SYNOPSIS 
 	Checks for updates on the local machine.
@@ -15,6 +18,5 @@
 	if this fails:
 	Copy the Filder from the ZIP to C:\Users\USER\Documents\WindowsPowerShell\Modules\PSWindowsUpdate
 	
-	Has to be executed with admin rights. 
-	The bat-File is asking for the Admin rights after started
+	
 
