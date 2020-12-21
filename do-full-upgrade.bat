@@ -1,2 +1,2 @@
 @echo off
-powershell.exe -Command "C:\Users\Daniel\Downloads\do-full-upgrade\do-full-upgrade.ps1"
+PowerShell.exe -Command "& {Start-Process PowerShell.exe -ArgumentList '-ExecutionPolicy Bypass -File ""%~dpn0.ps1""' -Verb RunAs}"

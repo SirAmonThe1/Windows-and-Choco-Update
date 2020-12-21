@@ -14,14 +14,11 @@
 	Also needs installed Chocolatey of course -- https://chocolatey.org
 	
 	Has to be executed with admin rights. Best is to create a bat-File like this:
-	  @echo off
-	  powershell.exe -Command "\path\to\do-full-upgrade.ps1"
-	and use a shortcut with "execute as admin" enabled
-.LINK 
-	Benjamin Heil, kontakt@bheil.net
-	https://www.bheil.net
+		@echo off
+		PowerShell.exe -Command "& {Start-Process PowerShell.exe -ArgumentList '-ExecutionPolicy Bypass -File ""%~dpn0.ps1""' -Verb RunAs}"
 #>
 
+cup PSWindowsUpdate -y
 Import-Module PSWindowsUpdate
 
 # Windows Update
@@ -53,12 +50,26 @@ if ($choco -like "*Chocolatey has determined 0 package(s) are outdated*") {
     $confirmation = Read-Host "Update all with Chocolatey? [y/n]"
     if ($confirmation -eq 'y') {
         cup all -y
-		Write-Host -ForegroundColor Yellow "Press any key to continue ..."
-		$host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     }
 }
 Write-Host
 
 # Reboot
-Write-Host -BackgroundColor DarkYellow -ForegroundColor White ">>> REBOOT STATUS"
-Get-WURebootStatus
+Write-Host -BackgroundColor Red -ForegroundColor White ">>> REBOOT STATUS"
+Write-Host "Checking for reboot status ..."
+$Reboot = Get-WURebootStatus
+if ($Reboot -like "*localhost: Reboot is not required*") {
+    Write-Host -ForegroundColor Green "No reboot required"
+} else {
+	Write-Host -ForegroundColor DarkGray ($choco | Format-Table | Out-String)
+	Write-Host -ForegroundColor Yellow "Reboot required."
+    $confirmation = Read-Host "Reboot now? [y/n]"
+    if ($confirmation -eq 'y') {
+        Restart-Computer
+    }
+}
+
+# Exit
+Write-Host ""
+Write-Host -ForegroundColor Yellow "Press any key to exit ..."
+$host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
