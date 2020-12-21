@@ -19,13 +19,12 @@
 #>
 
 cup PSWindowsUpdate -y
-Import-Module PSWindowsUpdate
 
 # Windows Update
 Write-Host -BackgroundColor Magenta -ForegroundColor White ">>> WINDOWS UPDATE"
 Write-Host "Checking for Windows Updates."
 Write-Host -ForegroundColor DarkGray "This will take a while ..."
-$updates = Get-WUInstall -ListOnly
+$updates = Get-WUList
 if ($updates) {
 	Write-Host -ForegroundColor Yellow "Updates found:"
     Write-Host ($updates | Format-Table | Out-String)
