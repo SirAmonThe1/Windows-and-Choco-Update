@@ -18,10 +18,13 @@
 		PowerShell.exe -Command "& {Start-Process PowerShell.exe -ArgumentList '-ExecutionPolicy Bypass -File ""%~dpn0.ps1""' -Verb RunAs}"
 #>
 
-cup PSWindowsUpdate -y
 
 # Windows Update
 Write-Host -BackgroundColor Magenta -ForegroundColor White ">>> WINDOWS UPDATE"
+Write-Host "Checking for updated tool PSWindowsUpdate."
+cup PSWindowsUpdate -y
+Write-Host
+
 Write-Host "Checking for Windows Updates."
 Write-Host -ForegroundColor DarkGray "This will take a while ..."
 $updates = Get-WUList
