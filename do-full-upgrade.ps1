@@ -20,8 +20,8 @@
 
 # Windows Update
 Write-Host -BackgroundColor Magenta -ForegroundColor White ">>> WINDOWS UPDATE"
-Write-Host "Checking for updated tool PSWindowsUpdate."
-cup PSWindowsUpdate -y
+Write-Host "Checking the tool PSWindowsUpdate."
+cup PSWindowsUpdate -y -r
 Write-Host
 
 Write-Host "Checking for Windows Updates."
@@ -50,7 +50,7 @@ if ($choco -like "*Chocolatey has determined 0 package(s) are outdated*") {
 	Write-Host -ForegroundColor Yellow "Outdated software found."
     $confirmation = Read-Host "Update all with Chocolatey? [y/n]"
     if ($confirmation -eq 'y') {
-        cup all -y
+        cup all -y -r
     }
 }
 Write-Host
