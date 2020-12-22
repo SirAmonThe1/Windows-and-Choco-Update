@@ -19,35 +19,37 @@
 #>
 
 # Windows Update
-Write-Host -BackgroundColor Magenta -ForegroundColor White ">>> WINDOWS UPDATE"
-Write-Host "Checking the tool PSWindowsUpdate."
+Write-Host -BackgroundColor Magenta -ForegroundColor White "##### --- WINDOWS UPDATE"
+Write-Host
+Write-Host -ForegroundColor Red ">>> Checking the tool PSWindowsUpdate"
 cup PSWindowsUpdate -y -r
 Write-Host
 
-Write-Host "Checking for Windows Updates."
+Write-Host -ForegroundColor Red ">>> Checking for Windows Updates"
 Write-Host -ForegroundColor DarkGray "This will take a while ..."
 $updates = Get-WUList
 if ($updates) {
-	Write-Host -ForegroundColor Yellow "Updates found:"
+	Write-Host -ForegroundColor Magenta ">>> Updates found:"
     Write-Host ($updates | Format-Table | Out-String)
-    $confirmation = Read-Host "Install all? [y/n]"
+    $confirmation = Read-Host ">>> Install all? [y/n]"
     if ($confirmation -eq 'y') {
-        Get-WUInstall -AcceptAll -IgnoreReboot -Verbose
+        Get-WUInstall -AcceptAll -IgnoreReboot
     }
 } else {
-    Write-Host -ForegroundColor Green "No Windows Updates available!"
+    Write-Host -ForegroundColor Green ">>> No Windows Updates available!"
 }
 Write-Host
 
 # Chocolatey
-Write-Host -BackgroundColor Blue -ForegroundColor White ">>> CHOCOLATEY"
-Write-Host "Checking for outdated software packages via Chocolatey ..."
+Write-Host -BackgroundColor Blue -ForegroundColor White "##### --- CHOCOLATEY"
+Write-Host
+Write-Host -ForegroundColor Red ">>> Checking for outdated software-packages via Chocolatey"
 $choco = choco outdated
 if ($choco -like "*Chocolatey has determined 0 package(s) are outdated*") {
-    Write-Host -ForegroundColor Green "No updates available via Chocolatey"
+    Write-Host -ForegroundColor Green ">>> No updates available via Chocolatey"
 } else {
 	Write-Host -ForegroundColor DarkGray ($choco | Format-Table | Out-String)
-	Write-Host -ForegroundColor Yellow "Outdated software found."
+	Write-Host -ForegroundColor Magenta ">>> Outdated software found"
     $confirmation = Read-Host "Update all with Chocolatey? [y/n]"
     if ($confirmation -eq 'y') {
         cup all -y -r
@@ -56,14 +58,15 @@ if ($choco -like "*Chocolatey has determined 0 package(s) are outdated*") {
 Write-Host
 
 # Reboot
-Write-Host -BackgroundColor Red -ForegroundColor White ">>> REBOOT STATUS"
-Write-Host "Checking for reboot status ..."
+Write-Host -BackgroundColor Red -ForegroundColor White "##### --- REBOOT STATUS"
+Write-Host
+Write-Host -ForegroundColor Red ">>> Checking for reboot status"
 $Reboot = Get-WURebootStatus
 if ($Reboot -like "*localhost: Reboot is not required*") {
-    Write-Host -ForegroundColor Green "No reboot required"
+    Write-Host -ForegroundColor Green ">>> No reboot required"
 } else {
 	Write-Host -ForegroundColor DarkGray ($choco | Format-Table | Out-String)
-	Write-Host -ForegroundColor Yellow "Reboot required."
+	Write-Host -ForegroundColor DarkRed ">>> Reboot required!"
     $confirmation = Read-Host "Reboot now? [y/n]"
     if ($confirmation -eq 'y') {
         Restart-Computer
@@ -71,6 +74,6 @@ if ($Reboot -like "*localhost: Reboot is not required*") {
 }
 
 # Exit
-Write-Host ""
+Write-Host 
 Write-Host -ForegroundColor Yellow "Press any key to exit ..."
 $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
