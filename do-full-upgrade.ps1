@@ -18,7 +18,6 @@
 		PowerShell.exe -Command "& {Start-Process PowerShell.exe -ArgumentList '-ExecutionPolicy Bypass -File ""%~dpn0.ps1""' -Verb RunAs}"
 #>
 
-
 # Windows Update
 Write-Host -BackgroundColor Magenta -ForegroundColor White ">>> WINDOWS UPDATE"
 Write-Host "Checking for updated tool PSWindowsUpdate."
