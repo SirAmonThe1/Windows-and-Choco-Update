@@ -53,7 +53,7 @@ if ($updates) {
     Write-Host ($updates | Format-Table | Out-String)
     $confirmation = Read-Host ">>> Install all? [y/n]"
     if ($confirmation -eq 'y') {
-        Get-WindowsUpdate -Install -MicrosoftUpdate -AcceptAll -IgnoreReboot
+        Get-WindowsUpdate -Install -MicrosoftUpdate -AcceptAll -IgnoreReboot -NotTitle "Lenovo"
     }
 } else {
     Write-Host -ForegroundColor Green ">>> No Windows Updates available!"
