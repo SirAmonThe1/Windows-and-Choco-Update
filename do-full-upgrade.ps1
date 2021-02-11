@@ -18,28 +18,6 @@
 		PowerShell.exe -Command "& {Start-Process PowerShell.exe -ArgumentList '-ExecutionPolicy Bypass -File ""%~dpn0.ps1""' -Verb RunAs}"
 #>
 
-# Windows Update
-Write-Host -BackgroundColor Magenta -ForegroundColor White "##### --- WINDOWS UPDATE"
-Write-Host
-Write-Host -ForegroundColor Red ">>> Checking the tool PSWindowsUpdate"
-cup PSWindowsUpdate -y -r
-Write-Host
-
-Write-Host -ForegroundColor Red ">>> Checking for Windows Updates"
-Write-Host -ForegroundColor DarkGray "This will take a while ..."
-$updates = Get-WUList
-if ($updates) {
-	Write-Host -ForegroundColor Magenta ">>> Updates found:"
-    Write-Host ($updates | Format-Table | Out-String)
-    $confirmation = Read-Host ">>> Install all? [y/n]"
-    if ($confirmation -eq 'y') {
-        Get-WUInstall -AcceptAll -IgnoreReboot
-    }
-} else {
-    Write-Host -ForegroundColor Green ">>> No Windows Updates available!"
-}
-Write-Host
-
 # Chocolatey
 Write-Host -BackgroundColor Blue -ForegroundColor White "##### --- CHOCOLATEY"
 Write-Host
@@ -57,6 +35,31 @@ if ($choco -like "*Chocolatey has determined 0 package(s) are outdated*") {
 }
 Write-Host
 
+# Windows Update
+Write-Host -BackgroundColor Magenta -ForegroundColor White "##### --- WINDOWS UPDATE"
+Write-Host
+Write-Host -ForegroundColor Red ">>> Checking the tool PSWindowsUpdate"
+$PS = cup PSWindowsUpdate -y -r
+if ($PS -like "*Chocolatey upgraded 0/1 packages*") {
+    Write-Host -ForegroundColor Green ">>> Up to date"
+}
+Write-Host
+
+Write-Host -ForegroundColor Red ">>> Checking for Windows Updates"
+Write-Host -ForegroundColor DarkGray "This will take a while ..."
+$updates = Get-WUList
+if ($updates) {
+	Write-Host -ForegroundColor Magenta ">>> Updates found:"
+    Write-Host ($updates | Format-Table | Out-String)
+    $confirmation = Read-Host ">>> Install all? [y/n]"
+    if ($confirmation -eq 'y') {
+        Get-WUInstall -AcceptAll -IgnoreReboot
+    }
+} else {
+    Write-Host -ForegroundColor Green ">>> No Windows Updates available!"
+}
+Write-Host
+
 # Reboot
 Write-Host -BackgroundColor Red -ForegroundColor White "##### --- REBOOT STATUS"
 Write-Host
@@ -64,14 +67,7 @@ Write-Host -ForegroundColor Red ">>> Checking for reboot status"
 $Reboot = Get-WURebootStatus
 if ($Reboot -like "*localhost: Reboot is not required*") {
     Write-Host -ForegroundColor Green ">>> No reboot required"
-} else {
-	Write-Host -ForegroundColor DarkGray ($choco | Format-Table | Out-String)
-	Write-Host -ForegroundColor DarkRed ">>> Reboot required!"
-    $confirmation = Read-Host "Reboot now? [y/n]"
-    if ($confirmation -eq 'y') {
-        Restart-Computer
-    }
-}
+} 
 
 # Exit
 Write-Host 
