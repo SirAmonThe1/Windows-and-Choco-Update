@@ -28,10 +28,10 @@ if ($choco -like "*Chocolatey has determined 0 package(s) are outdated*") {
 } else {
 	Write-Host -ForegroundColor DarkGray ($choco | Format-Table | Out-String)
 	Write-Host -ForegroundColor Magenta ">>> Outdated software found"
-    $confirmation = Read-Host "Update all with Chocolatey? [y/n]"
+    <#$confirmation = Read-Host "Update all with Chocolatey? [y/n]"
     if ($confirmation -eq 'y') {
-        cup all -y -r
-    }
+        cup all -y -r#>
+	cup all -y -r
 }
 Write-Host
 
@@ -51,11 +51,12 @@ $updates = Get-WUlist -MicrosoftUpdate
 if ($updates) {
 	Write-Host -ForegroundColor Magenta ">>> Updates found:"
     Write-Host ($updates | Format-Table | Out-String)
-    $confirmation = Read-Host ">>> Install all? [y/n]"
+    <#$confirmation = Read-Host ">>> Install all? [y/n]"
     if ($confirmation -eq 'y') {
-        Get-WindowsUpdate -Install -MicrosoftUpdate -AcceptAll -IgnoreReboot -NotTitle "Lenovo"
-    }
-} else {
+        Get-WindowsUpdate -Install -MicrosoftUpdate -AcceptAll -IgnoreReboot -NotTitle "Lenovo"#>
+    Get-WindowsUpdate -Install -MicrosoftUpdate -AcceptAll -IgnoreReboot -NotTitle "Lenovo"
+	}
+else {
     Write-Host -ForegroundColor Green ">>> No Windows Updates available!"
 }
 Write-Host
