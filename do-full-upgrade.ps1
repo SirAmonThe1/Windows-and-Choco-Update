@@ -49,17 +49,17 @@ Write-Host
 
 Write-Host -ForegroundColor Red ">>> Checking for Windows Updates"
 Write-Host -ForegroundColor DarkGray "This will take a while ..."
-Get-WindowsUpdate -Title "Lenovo*" -hide -confirm:$false
-Get-WindowsUpdate -Title "Advanced Micro*" -hide -confirm:$false
+
+Hide-WindowsUpdate -Title "Lenovo*" -hide -confirm:$false
+Hide-WindowsUpdate -Title "Advanced Micro*" -hide -confirm:$false
+
 $updates = Get-WUlist -MicrosoftUpdate
 
 if ($updates) {
 	Write-Host -ForegroundColor Magenta ">>> Updates found:"
     Write-Host ($updates | Format-Table | Out-String)
-    <#$confirmation = Read-Host ">>> Install all? [y/n]"
-    if ($confirmation -eq 'y') {
-        Get-WindowsUpdate -Install -MicrosoftUpdate -AcceptAll -IgnoreReboot -NotTitle "Lenovo"#>
-    Get-WindowsUpdate -Install -MicrosoftUpdate -AcceptAll -IgnoreReboot
+
+	Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot | Format-Table
 	}
 else {
     Write-Host -ForegroundColor Green ">>> No Windows Updates available!"
